@@ -33,6 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: [IconButton(icon: Icon(Icons.add), onPressed: () {})],
       ),
       body: Container(),
     );
