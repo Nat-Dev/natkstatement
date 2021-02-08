@@ -129,11 +129,4 @@ class _AuthenState extends State<Authen> {
       child: MyStyle().showLogo(),
     );
   }
-
-  Container buildBackground() {
-    return Container(
-      width: screenWidth,
-      child: MyStyle().showBackground(),
-    );
-  }
 }

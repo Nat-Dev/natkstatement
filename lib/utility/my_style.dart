@@ -6,7 +6,6 @@ class MyStyle {
   Color darkTheme = Color(0xff004ba0);
 
   Widget showLogo() => Image.asset('images/logo.png');
-  Widget showBackground() => Image.asset('images/background.jpg');
   Widget titleH1(String text) => Text(
         text,
         style: TextStyle(

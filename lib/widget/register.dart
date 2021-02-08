@@ -117,26 +117,33 @@ class _RegisterState extends State<Register> {
         backgroundColor: MyStyle().themeColor,
         title: Text("Register"),
       ),
-      body: ListView(
-        padding: EdgeInsets.all(30.0),
-        children: <Widget>[
-          SizedBox(
-            height: screenHeight * 0.07,
-          ),
-          buildUsername(),
-          SizedBox(
-            height: screenHeight * 0.07,
-          ),
-          buildEmail(),
-          SizedBox(
-            height: screenHeight * 0.07,
-          ),
-          buildPassword(),
-          SizedBox(
-            height: screenHeight * 0.07,
-          ),
-          buildSignUp(),
-        ],
+      body: Container(
+        decoration: BoxDecoration(
+            image: DecorationImage(
+          image: AssetImage("images/register_bg.jpg"),
+          fit: BoxFit.cover,
+        )),
+        child: ListView(
+          padding: EdgeInsets.all(30.0),
+          children: <Widget>[
+            SizedBox(
+              height: screenHeight * 0.07,
+            ),
+            buildUsername(),
+            SizedBox(
+              height: screenHeight * 0.07,
+            ),
+            buildEmail(),
+            SizedBox(
+              height: screenHeight * 0.07,
+            ),
+            buildPassword(),
+            SizedBox(
+              height: screenHeight * 0.07,
+            ),
+            buildSignUp(),
+          ],
+        ),
       ),
     );
   }
