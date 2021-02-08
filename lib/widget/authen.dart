@@ -7,12 +7,12 @@ class Authen extends StatefulWidget {
 }
 
 class _AuthenState extends State<Authen> {
-  double screen;
+  double screenWidth;
   bool redEyeStatus = true;
 
   @override
   Widget build(BuildContext context) {
-    screen = MediaQuery.of(context).size.width;
+    screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       floatingActionButton: buildSignUp(),
       body: Container(
@@ -52,10 +52,13 @@ class _AuthenState extends State<Authen> {
   Container buildSignIn() {
     return Container(
       margin: EdgeInsets.only(top: 16),
-      width: screen * 0.8,
+      width: screenWidth * 0.8,
       child: ElevatedButton(
         onPressed: () {},
-        child: Text("Sign in"),
+        child: Text(
+          "Sign In",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         style: ElevatedButton.styleFrom(
           primary: Colors.greenAccent.shade700,
           shape: RoundedRectangleBorder(
@@ -69,7 +72,7 @@ class _AuthenState extends State<Authen> {
   Container buildUser() {
     return Container(
       margin: EdgeInsets.only(top: 16),
-      width: screen * 0.8,
+      width: screenWidth * 0.8,
       child: TextField(
         decoration: InputDecoration(
           hintText: "User:",
@@ -91,7 +94,7 @@ class _AuthenState extends State<Authen> {
   Container buildPassword() {
     return Container(
       margin: EdgeInsets.only(top: 16),
-      width: screen * 0.8,
+      width: screenWidth * 0.8,
       child: TextField(
         obscureText: redEyeStatus,
         decoration: InputDecoration(
@@ -122,14 +125,14 @@ class _AuthenState extends State<Authen> {
 
   Container buildLogo() {
     return Container(
-      width: screen * 0.4,
+      width: screenWidth * 0.4,
       child: MyStyle().showLogo(),
     );
   }
 
   Container buildBackground() {
     return Container(
-      width: screen,
+      width: screenWidth,
       child: MyStyle().showBackground(),
     );
   }
