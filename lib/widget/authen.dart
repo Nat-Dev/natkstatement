@@ -41,9 +41,7 @@ class _AuthenState extends State<Authen> {
 
   TextButton buildSignUp() {
     return TextButton(
-      onPressed: () {
-        print("you click sign up");
-      },
+      onPressed: () => Navigator.pushNamed(context, '/register'),
       child: Text(
         "Sign Up",
         style: TextStyle(color: MyStyle().lightTheme, fontSize: 16),
