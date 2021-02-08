@@ -27,7 +27,7 @@ class _AuthenState extends State<Authen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 buildLogo(),
-                MyStyle().titleH1("NatK Statement"),
+                MyStyle().titleH1("Money Recorder"),
                 buildUser(),
                 buildPassword(),
                 buildSignIn(),
