@@ -75,7 +75,7 @@ class _AuthenState extends State<Authen> {
       width: screenWidth * 0.8,
       child: TextField(
         decoration: InputDecoration(
-          hintText: "User:",
+          hintText: "Username:",
           hintStyle: TextStyle(color: MyStyle().darkTheme),
           prefixIcon: Icon(Icons.perm_identity),
           enabledBorder: OutlineInputBorder(
