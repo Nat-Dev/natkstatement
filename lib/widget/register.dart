@@ -7,6 +7,7 @@ class Register extends StatefulWidget {
 }
 
 class _RegisterState extends State<Register> {
+  final formKey = GlobalKey<FormState>();
   double screenWidth;
   double screenHeight;
   String userName, email, password;
@@ -16,12 +17,11 @@ class _RegisterState extends State<Register> {
     return Container(
       margin: EdgeInsets.only(top: 16),
       width: screenWidth * 0.8,
-      child: TextField(
-        onChanged: (value) => userName = value.trim(),
+      child: TextFormField(
         decoration: InputDecoration(
           hintText: "Username:",
           hintStyle: TextStyle(color: MyStyle().darkTheme),
-          helperText: "Type your Username.",
+          helperText: "Type your Username",
           helperStyle: TextStyle(
             color: MyStyle().darkTheme,
             fontStyle: FontStyle.italic,
@@ -37,6 +37,16 @@ class _RegisterState extends State<Register> {
             borderSide: BorderSide(color: MyStyle().lightTheme),
           ),
         ),
+        validator: (String value) {
+          if (value.isEmpty) {
+            return "Please type your Username in the field";
+          } else {
+            return null;
+          }
+        },
+        onSaved: (String value) {
+          userName = value.trim();
+        },
       ),
     );
   }
@@ -45,13 +55,12 @@ class _RegisterState extends State<Register> {
     return Container(
       margin: EdgeInsets.only(top: 16),
       width: screenWidth * 0.8,
-      child: TextField(
-        onChanged: (value) => email = value.trim(),
+      child: TextFormField(
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           hintText: "Email:",
           hintStyle: TextStyle(color: MyStyle().darkTheme),
-          helperText: "Type your Email Address.",
+          helperText: "Type your Email Address",
           helperStyle: TextStyle(
             color: MyStyle().darkTheme,
             fontStyle: FontStyle.italic,
@@ -67,6 +76,16 @@ class _RegisterState extends State<Register> {
             borderSide: BorderSide(color: MyStyle().lightTheme),
           ),
         ),
+        validator: (String value) {
+          if (!(value.contains('@') && value.contains('.'))) {
+            return "Please type your Email Address in the field";
+          } else {
+            return null;
+          }
+        },
+        onSaved: (String value) {
+          email = value.trim();
+        },
       ),
     );
   }
@@ -75,13 +94,12 @@ class _RegisterState extends State<Register> {
     return Container(
       margin: EdgeInsets.only(top: 16),
       width: screenWidth * 0.8,
-      child: TextField(
-        onChanged: (value) => password = value.trim(),
+      child: TextFormField(
         obscureText: redEyeStatus,
         decoration: InputDecoration(
           hintText: "Password:",
           hintStyle: TextStyle(color: MyStyle().darkTheme),
-          helperText: "Your password must be at least 6 characters.",
+          helperText: "Your password must be at least 6 characters",
           helperStyle: TextStyle(
             color: MyStyle().darkTheme,
             fontStyle: FontStyle.italic,
@@ -106,6 +124,16 @@ class _RegisterState extends State<Register> {
             borderSide: BorderSide(color: MyStyle().lightTheme),
           ),
         ),
+        validator: (String value) {
+          if (value.length < 6) {
+            return "Password must be at least 6 characters";
+          } else {
+            return null;
+          }
+        },
+        onSaved: (String value) {
+          password = value.trim();
+        },
       ),
     );
   }
@@ -115,7 +143,12 @@ class _RegisterState extends State<Register> {
       margin: EdgeInsets.only(top: 16),
       width: screenWidth * 0.8,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          if (formKey.currentState.validate()) {
+            formKey.currentState.save();
+            print("Username = $userName, Email = $email, Password = $password");
+          }
+        },
         child: Text(
           "Sign Up",
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -145,26 +178,29 @@ class _RegisterState extends State<Register> {
           image: AssetImage("images/register_bg.jpg"),
           fit: BoxFit.cover,
         )),
-        child: ListView(
-          padding: EdgeInsets.all(30.0),
-          children: <Widget>[
-            SizedBox(
-              height: screenHeight * 0.07,
-            ),
-            buildUsername(),
-            SizedBox(
-              height: screenHeight * 0.07,
-            ),
-            buildEmail(),
-            SizedBox(
-              height: screenHeight * 0.07,
-            ),
-            buildPassword(),
-            SizedBox(
-              height: screenHeight * 0.07,
-            ),
-            buildSignUp(),
-          ],
+        child: Form(
+          key: formKey,
+          child: ListView(
+            padding: EdgeInsets.all(30.0),
+            children: <Widget>[
+              SizedBox(
+                height: screenHeight * 0.07,
+              ),
+              buildUsername(),
+              SizedBox(
+                height: screenHeight * 0.07,
+              ),
+              buildEmail(),
+              SizedBox(
+                height: screenHeight * 0.07,
+              ),
+              buildPassword(),
+              SizedBox(
+                height: screenHeight * 0.07,
+              ),
+              buildSignUp(),
+            ],
+          ),
         ),
       ),
     );
