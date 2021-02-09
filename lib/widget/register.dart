@@ -9,6 +9,7 @@ class Register extends StatefulWidget {
 class _RegisterState extends State<Register> {
   double screenWidth;
   double screenHeight;
+  String userName, email, password;
   bool redEyeStatus = true;
 
   Container buildUsername() {
@@ -16,9 +17,16 @@ class _RegisterState extends State<Register> {
       margin: EdgeInsets.only(top: 16),
       width: screenWidth * 0.8,
       child: TextField(
+        onChanged: (value) => userName = value.trim(),
         decoration: InputDecoration(
           hintText: "Username:",
           hintStyle: TextStyle(color: MyStyle().darkTheme),
+          helperText: "Type your Username.",
+          helperStyle: TextStyle(
+            color: MyStyle().darkTheme,
+            fontStyle: FontStyle.italic,
+            fontSize: 13.5,
+          ),
           prefixIcon: Icon(Icons.perm_identity),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25),
@@ -38,10 +46,17 @@ class _RegisterState extends State<Register> {
       margin: EdgeInsets.only(top: 16),
       width: screenWidth * 0.8,
       child: TextField(
+        onChanged: (value) => email = value.trim(),
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
           hintText: "Email:",
           hintStyle: TextStyle(color: MyStyle().darkTheme),
+          helperText: "Type your Email Address.",
+          helperStyle: TextStyle(
+            color: MyStyle().darkTheme,
+            fontStyle: FontStyle.italic,
+            fontSize: 13.5,
+          ),
           prefixIcon: Icon(Icons.email_outlined),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(25),
@@ -61,10 +76,17 @@ class _RegisterState extends State<Register> {
       margin: EdgeInsets.only(top: 16),
       width: screenWidth * 0.8,
       child: TextField(
+        onChanged: (value) => password = value.trim(),
         obscureText: redEyeStatus,
         decoration: InputDecoration(
           hintText: "Password:",
           hintStyle: TextStyle(color: MyStyle().darkTheme),
+          helperText: "Your password must be at least 6 characters.",
+          helperStyle: TextStyle(
+            color: MyStyle().darkTheme,
+            fontStyle: FontStyle.italic,
+            fontSize: 13.5,
+          ),
           prefixIcon: Icon(Icons.lock_outline),
           suffixIcon: IconButton(
               icon: redEyeStatus
