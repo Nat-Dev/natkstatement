@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:natkstatement/screens/verify.dart';
 import 'package:natkstatement/utility/my_style.dart';
 
 class Register extends StatefulWidget {
@@ -147,6 +150,7 @@ class _RegisterState extends State<Register> {
           if (formKey.currentState.validate()) {
             formKey.currentState.save();
             print("Username = $userName, Email = $email, Password = $password");
+            registerFirebase();
           }
         },
         child: Text(
@@ -160,6 +164,92 @@ class _RegisterState extends State<Register> {
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> registerFirebase() async {
+    await Firebase.initializeApp().then((value) async {
+      print("Firebase Initialize Success.");
+      FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+      try {
+        await firebaseAuth.createUserWithEmailAndPassword(
+            email: email, password: password);
+        sendEmailAlert();
+      } catch (err) {
+        String code = err.code;
+        String message = err.message;
+        print("ERROR : $message CODE: $code");
+        registerFailAlert(message);
+      }
+    });
+  }
+
+  void sendEmailAlert() {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: ListTile(
+            leading: Icon(
+              Icons.assignment_turned_in,
+              color: Colors.lightGreenAccent.shade400,
+              size: 48.0,
+            ),
+            title: Text(
+              "Send Verification Email",
+              style: TextStyle(
+                  color: Colors.blue.shade600,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          content: Text("press OK to continue and send email"),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(builder: (context) => VerifyEmail()));
+              },
+            )
+          ],
+        );
+      },
+    );
+  }
+
+  void registerFailAlert(String message) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: ListTile(
+            leading: Icon(
+              Icons.assignment_late,
+              color: Colors.red,
+              size: 48.0,
+            ),
+            title: Text(
+              "Can not create account.",
+              style: TextStyle(
+                  color: Colors.blue.shade600,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          content: Text(message),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
     );
   }
 
