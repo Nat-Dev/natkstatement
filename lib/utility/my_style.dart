@@ -14,6 +14,23 @@ class MyStyle {
           color: themeColor,
         ),
       );
+  Widget titleH2(String text) => Text(
+        text,
+        style: TextStyle(
+          fontSize: 18,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
+      );
+
+  Widget titleH3(String text) => Text(
+        text,
+        style: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.bold,
+          color: Colors.white54,
+        ),
+      );
 
   MyStyle();
 }
