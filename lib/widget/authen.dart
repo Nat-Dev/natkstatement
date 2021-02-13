@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:natkstatement/utility/my_style.dart';
+import 'package:natkstatement/widget/home.dart';
 
 class Authen extends StatefulWidget {
   @override
@@ -9,6 +11,8 @@ class Authen extends StatefulWidget {
 class _AuthenState extends State<Authen> {
   double screenWidth;
   bool redEyeStatus = true;
+  String email, password;
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
@@ -23,19 +27,74 @@ class _AuthenState extends State<Authen> {
         )),
         child: Center(
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                buildLogo(),
-                MyStyle().titleH1("Money Recorder"),
-                buildUser(),
-                buildPassword(),
-                buildSignIn(),
-              ],
+            child: Form(
+              key: formKey,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  buildLogo(),
+                  MyStyle().titleH1("Money Recorder"),
+                  buildUser(),
+                  buildPassword(),
+                  buildSignIn(),
+                ],
+              ),
             ),
           ),
         ),
       ),
+    );
+  }
+
+  Future<void> checkAuthen() async {
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    try {
+      await firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
+      print("Authen Successfully.");
+      MaterialPageRoute materialPageRoute =
+          MaterialPageRoute(builder: (BuildContext context) => Home());
+      Navigator.of(context).pushAndRemoveUntil(
+          materialPageRoute, (Route<dynamic> route) => false);
+    } catch (e) {
+      String code = e.code;
+      String message = e.message;
+      print("ERROR : $message CODE: $code");
+      loginFailAlert(message);
+    }
+  }
+
+  void loginFailAlert(String message) {
+    showDialog(
+      barrierDismissible: false,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: ListTile(
+            leading: Icon(
+              Icons.assignment_late,
+              color: Colors.red,
+              size: 48.0,
+            ),
+            title: Text(
+              "Can not Sign-in to account.",
+              style: TextStyle(
+                  color: Colors.blue.shade600,
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          content: Text(message),
+          actions: <Widget>[
+            FlatButton(
+              child: Text("OK"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            )
+          ],
+        );
+      },
     );
   }
 
@@ -54,7 +113,12 @@ class _AuthenState extends State<Authen> {
       margin: EdgeInsets.only(top: 16),
       width: screenWidth * 0.8,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          if (formKey.currentState.validate()) {
+            formKey.currentState.save();
+            checkAuthen();
+          }
+        },
         child: Text(
           "Sign In",
           style: TextStyle(fontWeight: FontWeight.bold),
@@ -73,7 +137,7 @@ class _AuthenState extends State<Authen> {
     return Container(
       margin: EdgeInsets.only(top: 16),
       width: screenWidth * 0.8,
-      child: TextField(
+      child: TextFormField(
         decoration: InputDecoration(
           hintText: "Username:",
           hintStyle: TextStyle(color: MyStyle().darkTheme),
@@ -87,6 +151,16 @@ class _AuthenState extends State<Authen> {
             borderSide: BorderSide(color: MyStyle().lightTheme),
           ),
         ),
+        validator: (String value) {
+          if ((value.contains('@')) && (value.contains('.'))) {
+            return null;
+          } else {
+            return "Please type your Email in the field.";
+          }
+        },
+        onSaved: (String value) {
+          email = value.trim();
+        },
       ),
     );
   }
@@ -95,7 +169,7 @@ class _AuthenState extends State<Authen> {
     return Container(
       margin: EdgeInsets.only(top: 16),
       width: screenWidth * 0.8,
-      child: TextField(
+      child: TextFormField(
         obscureText: redEyeStatus,
         decoration: InputDecoration(
           hintText: "Password:",
@@ -119,6 +193,16 @@ class _AuthenState extends State<Authen> {
             borderSide: BorderSide(color: MyStyle().lightTheme),
           ),
         ),
+        validator: (String value) {
+          if (value.isEmpty) {
+            return "Please type your Password in the field.";
+          } else {
+            return null;
+          }
+        },
+        onSaved: (String value) {
+          password = value.trim();
+        },
       ),
     );
   }
