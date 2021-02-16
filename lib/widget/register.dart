@@ -154,7 +154,7 @@ class _RegisterState extends State<Register> {
           }
         },
         child: Text(
-          "Sign Up",
+          "Register",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
         style: ElevatedButton.styleFrom(

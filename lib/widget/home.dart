@@ -9,15 +9,46 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  String userName, email;
+
+  @override
+  void initState() {
+    super.initState();
+    findUsernameAndEmail();
+  }
+
+  Future<Null> findUsernameAndEmail() async {
+    await Firebase.initializeApp().then((value) async {
+      await FirebaseAuth.instance.authStateChanges().listen((event) {
+        setState(() {
+          userName = event.displayName;
+          email = event.email;
+          print("userName = " + userName);
+        });
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: MyStyle().themeColor,
         title: Text("Home"),
+        actions: [IconButton(icon: Icon(Icons.add), onPressed: () {})],
       ),
       drawer: Drawer(
-        child: buildSignOut(),
+        child: Stack(
+          children: [
+            UserAccountsDrawerHeader(
+              decoration: BoxDecoration(color: MyStyle().darkTheme),
+              accountName: null,
+              accountEmail: MyStyle().titleH2(email == null ? "Email" : email),
+              currentAccountPicture: Image.asset("images/user.png"),
+            ),
+            buildSignOut(),
+          ],
+        ),
       ),
     );
   }
